@@ -1,5 +1,5 @@
-import Login from './login';
+import SplashScreen from './SplashScreen';
 
 export default function Index() {
-  return <Login />;
+  return <SplashScreen />;
 } 

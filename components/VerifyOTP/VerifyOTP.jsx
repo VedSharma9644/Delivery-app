@@ -8,9 +8,11 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AuthBackground from '@/components/Common/AuthBackground';
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -51,69 +53,53 @@ const VerifyOTP = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidView}
-      >
-        <View style={styles.content}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#333" />
-          </TouchableOpacity>
-
-          <View style={styles.header}>
-            <View style={styles.logoContainer}>
-              <Text style={styles.logo}>groccy</Text>
-              <View style={styles.cartIconWrapper}>
-                <Ionicons name="cart" size={24} color="#FF5722" />
-              </View>
+    <AuthBackground showBack={true} onBack={() => router.back()}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <Text style={styles.logo}>groccy</Text>
+            <View style={styles.cartIconWrapper}>
+              <Ionicons name="cart" size={24} color="#FF5722" />
             </View>
           </View>
-
-          <Text style={styles.title}>Verify Your Account</Text>
-          <Text style={styles.subtitle}>
-            Enter the 6-digit code we sent you to quickly verify your mobile.
-          </Text>
-
-          <View style={styles.otpContainer}>
-            {otp.map((digit, index) => (
-              <TextInput
-                key={index}
-                ref={ref => inputRefs.current[index] = ref}
-                style={styles.otpInput}
-                value={digit}
-                onChangeText={(value) => handleOtpChange(value, index)}
-                onKeyPress={(e) => handleKeyPress(e, index)}
-                keyboardType="numeric"
-                maxLength={1}
-                selectTextOnFocus
-              />
-            ))}
-          </View>
-
-          <TouchableOpacity 
-            style={[
-              styles.verifyButton,
-              !otp.every(digit => digit !== '') && styles.verifyButtonDisabled
-            ]}
-            onPress={handleVerify}
-            disabled={!otp.every(digit => digit !== '')}
-          >
-            <Text style={styles.verifyButtonText}>Verify</Text>
-          </TouchableOpacity>
-
-          <View style={styles.resendContainer}>
-            <Text style={styles.resendText}>Did not receive OTP? </Text>
-            <TouchableOpacity onPress={handleResendCode}>
-              <Text style={styles.resendLink}>Resend code</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        <Text style={styles.title}>Verify Your Account</Text>
+        <Text style={styles.subtitle}>
+          Enter the 6-digit code we sent you to quickly verify your mobile.
+        </Text>
+        <View style={styles.otpContainer}>
+          {otp.map((digit, index) => (
+            <TextInput
+              key={index}
+              ref={ref => inputRefs.current[index] = ref}
+              style={styles.otpInput}
+              value={digit}
+              onChangeText={(value) => handleOtpChange(value, index)}
+              onKeyPress={(e) => handleKeyPress(e, index)}
+              keyboardType="numeric"
+              maxLength={1}
+              selectTextOnFocus
+            />
+          ))}
+        </View>
+        <TouchableOpacity 
+          style={[
+            styles.verifyButton,
+            !otp.every(digit => digit !== '') && styles.verifyButtonDisabled
+          ]}
+          onPress={handleVerify}
+          disabled={!otp.every(digit => digit !== '')}
+        >
+          <Text style={styles.verifyButtonText}>Verify</Text>
+        </TouchableOpacity>
+        <View style={styles.resendContainer}>
+          <Text style={styles.resendText}>Did not receive OTP? </Text>
+          <TouchableOpacity onPress={handleResendCode}>
+            <Text style={styles.resendLink}>Resend code</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </AuthBackground>
   );
 };
 

@@ -8,10 +8,12 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import SafeAreaWrapper from '@/components/Common/SafeAreaWrapper';
+import AuthBackground from '@/components/Common/AuthBackground';
 
 const Signup = () => {
   const [fullName, setFullName] = useState('');
@@ -25,13 +27,12 @@ const Signup = () => {
   };
 
   return (
-    <SafeAreaWrapper>
-      <View style={styles.container}>
+    <AuthBackground showBack={true} onBack={() => router.back()}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Sign up to get started</Text>
         </View>
-
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <Ionicons name="person-outline" size={20} color="#666" />
@@ -39,18 +40,22 @@ const Signup = () => {
               style={styles.input}
               placeholder="Full Name"
               placeholderTextColor="#999"
+              value={fullName}
+              onChangeText={setFullName}
             />
           </View>
-
           <View style={styles.inputContainer}>
             <Ionicons name="mail-outline" size={20} color="#666" />
             <TextInput
               style={styles.input}
               placeholder="Email"
               placeholderTextColor="#999"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
             />
           </View>
-
           <View style={styles.inputContainer}>
             <Ionicons name="lock-closed-outline" size={20} color="#666" />
             <TextInput
@@ -60,11 +65,16 @@ const Signup = () => {
               secureTextEntry
             />
           </View>
-
-          <TouchableOpacity style={styles.signupButton}>
+          <TouchableOpacity 
+            style={[
+              styles.signupButton,
+              (!fullName || !email) && styles.signupButtonDisabled
+            ]}
+            onPress={handleSubmit}
+            disabled={!fullName || !email}
+          >
             <Text style={styles.signupButtonText}>Sign Up</Text>
           </TouchableOpacity>
-
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Already have an account? </Text>
             <TouchableOpacity onPress={() => router.push('/login')}>
@@ -72,8 +82,8 @@ const Signup = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
-    </SafeAreaWrapper>
+      </ScrollView>
+    </AuthBackground>
   );
 };
 
@@ -120,6 +130,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
+  },
+  signupButtonDisabled: {
+    backgroundColor: '#DDDDDD',
   },
   signupButtonText: {
     color: '#FFF',

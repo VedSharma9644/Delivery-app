@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const FOOD_ITEMS = [
@@ -18,6 +18,84 @@ const FOOD_ITEMS = [
     deliveryTime: '25-35 min',
   },
 ];
+
+const RESTAURANT_VENDORS = [
+  {
+    id: '1',
+    name: 'Biryani Palace',
+    cuisine: 'Hyderabadi Cuisine',
+    location: 'Iselin, NJ',
+    rating: 4.6,
+    time: '35 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '2',
+    name: 'Masala Wok',
+    cuisine: 'North Indian',
+    location: 'Edison, NJ',
+    rating: 4.3,
+    time: '20 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '3',
+    name: 'Tandoori Nights',
+    cuisine: 'Punjabi Cuisine',
+    location: 'Jersey City, NJ',
+    rating: 4.5,
+    time: '30 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '4',
+    name: 'Spice Villa',
+    cuisine: 'South Indian',
+    location: 'Newark, NJ',
+    rating: 4.4,
+    time: '25 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '5',
+    name: 'Bombay Bites',
+    cuisine: 'Street Food',
+    location: 'Hoboken, NJ',
+    rating: 4.2,
+    time: '28 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '6',
+    name: 'Curry House',
+    cuisine: 'Indian',
+    location: 'Princeton, NJ',
+    rating: 4.1,
+    time: '32 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '7',
+    name: 'Royal Kitchen',
+    cuisine: 'Mughlai',
+    location: 'Trenton, NJ',
+    rating: 4.7,
+    time: '40 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+  {
+    id: '8',
+    name: 'Urban Dhaba',
+    cuisine: 'Dhaba Style',
+    location: 'Paterson, NJ',
+    rating: 4.0,
+    time: '22 mins',
+    image: require('@/assets/mobile-images/Restaurant Vendor/restaurant vendor image.png'),
+  },
+];
+
+const CARD_GAP = 8;
+const CARD_WIDTH = (Dimensions.get('window').width - 12 * 2 - CARD_GAP) / 2; // 16px padding on both sides + 16px gap between
 
 const FoodList = () => {
   const renderFoodItem = (item) => (
@@ -44,6 +122,26 @@ const FoodList = () => {
     </TouchableOpacity>
   );
 
+  const renderRestaurantVendor = ({ item: vendor }) => (
+    <TouchableOpacity key={vendor.id} style={[styles.vendorCard, { width: CARD_WIDTH }]}>
+      <Image source={vendor.image} style={styles.vendorImage} resizeMode="cover" />
+      <View style={styles.vendorInfo}>
+        <Text style={styles.vendorName}>{vendor.name}</Text>
+        <View style={styles.vendorRatingRow}>
+          <Ionicons name="star" size={18} color="#FFB300" style={{ marginRight: 2 }} />
+          <Text style={styles.vendorRating}>{vendor.rating}</Text>
+        </View>
+        <Text style={styles.vendorCuisine}>{vendor.cuisine}</Text>
+        <View style={styles.vendorDetailsRow}>
+          <Ionicons name="location-outline" size={16} color="#B0B0B0" style={{ marginRight: 4 }} />
+          <Text style={styles.vendorLocation}>{vendor.location}</Text>
+          <Ionicons name="time-outline" size={16} color="#B0B0B0" style={{ marginLeft: 16, marginRight: 4 }} />
+          <Text style={styles.vendorTime}>{vendor.time}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -52,16 +150,23 @@ const FoodList = () => {
           <Text style={styles.viewAllText}>View All</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.foodList}>
-        {FOOD_ITEMS.map(renderFoodItem)}
-      </View>
+      <FlatList
+        data={RESTAURANT_VENDORS}
+        renderItem={renderRestaurantVendor}
+        keyExtractor={item => item.id}
+        numColumns={2}
+        columnWrapperStyle={styles.gridRow}
+        contentContainerStyle={{ gap: 16 }}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 10,
+    backgroundColor: 'transparent',
   },
   header: {
     flexDirection: 'row',
@@ -70,16 +175,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '600',
     color: '#333',
   },
   viewAllText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#FF5722',
   },
   foodList: {
-    gap: 16,
+    // removed gap, now handled by FlatList
   },
   foodItem: {
     flexDirection: 'row',
@@ -108,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   foodName: {
-    fontSize: 16,
+    fontSize: 11,
     fontWeight: '500',
     color: '#333',
     marginBottom: 4,
@@ -119,7 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   ratingText: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
     marginLeft: 4,
   },
@@ -138,9 +243,71 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timeText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     marginLeft: 4,
+  },
+  gridRow: {
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  vendorCard: {
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
+    marginBottom: 0,
+    padding: 0,
+    overflow: 'hidden',
+    minWidth: 0,
+  },
+  vendorImage: {
+    width: '100%',
+    height: 140,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+  vendorInfo: {
+    padding: 8,
+  },
+  vendorName: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#222',
+    marginBottom: 4,
+  },
+  vendorRatingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  vendorRating: {
+    fontSize: 16,
+    color: '#888',
+    marginLeft: 2,
+    fontWeight: '500',
+  },
+  vendorCuisine: {
+    fontSize: 15,
+    color: '#999',
+    marginBottom: 8,
+  },
+  vendorDetailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  vendorLocation: {
+    fontSize: 11,
+    color: '#B0B0B0',
+    marginRight: 8,
+  },
+  vendorTime: {
+    fontSize: 11,
+    color: '#B0B0B0',
   },
 });
 

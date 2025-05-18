@@ -8,9 +8,11 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AuthBackground from '@/components/Common/AuthBackground';
 
 const SignUpStep2 = () => {
   const [phone, setPhone] = useState('');
@@ -19,92 +21,76 @@ const SignUpStep2 = () => {
   const router = useRouter();
 
   const handleSignUp = () => {
-    // Handle sign up logic here
-    router.push('/signup-verify');
+    if (phone && password) {
+      router.push('/signup-verify');
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidView}
-      >
-        <View style={styles.content}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#333" />
-          </TouchableOpacity>
-
-          <View style={styles.header}>
-            <View style={styles.logoContainer}>
-              <Text style={styles.logo}>groccy</Text>
-              <View style={styles.cartIconWrapper}>
-                <Ionicons name="cart" size={24} color="#FF5722" />
-              </View>
-            </View>
-          </View>
-
-          <Text style={styles.title}>Let's Get You Started</Text>
-
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Phone Number</Text>
-              <TextInput
-                style={styles.input}
-                value={phone}
-                onChangeText={setPhone}
-                placeholder="22 1234 5678"
-                keyboardType="phone-pad"
-              />
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Password</Text>
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  style={styles.input}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                  placeholder="••••••••"
-                  autoCapitalize="none"
-                />
-                <TouchableOpacity
-                  style={styles.eyeIcon}
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Ionicons
-                    name={showPassword ? "eye" : "eye-off"}
-                    size={24}
-                    color="#666"
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <TouchableOpacity 
-              style={[
-                styles.signUpButton,
-                (!phone || !password) && styles.signUpButtonDisabled
-              ]}
-              onPress={handleSignUp}
-              disabled={!phone || !password}
-            >
-              <Text style={styles.signUpButtonText}>Sign Up</Text>
-            </TouchableOpacity>
-
-            <View style={styles.signInPrompt}>
-              <Text style={styles.signInText}>Already have an account? </Text>
-              <TouchableOpacity onPress={() => router.push('/login')}>
-                <Text style={styles.signInLink}>Sign in</Text>
-              </TouchableOpacity>
+    <AuthBackground showBack={true} onBack={() => router.back()}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <Text style={styles.logo}>groccy</Text>
+            <View style={styles.cartIconWrapper}>
+              <Ionicons name="cart" size={24} color="#FF5722" />
             </View>
           </View>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        <Text style={styles.title}>Let's Get You Started</Text>
+        <View style={styles.form}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Phone Number</Text>
+            <TextInput
+              style={styles.input}
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="22 1234 5678"
+              keyboardType="phone-pad"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Password</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.input}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                placeholder="••••••••"
+                autoCapitalize="none"
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  size={24}
+                  color="#666"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity 
+            style={[
+              styles.signUpButton,
+              (!phone || !password) && styles.signUpButtonDisabled
+            ]}
+            onPress={handleSignUp}
+            disabled={!phone || !password}
+          >
+            <Text style={styles.signUpButtonText}>Sign Up</Text>
+          </TouchableOpacity>
+          <View style={styles.signInPrompt}>
+            <Text style={styles.signInText}>Already have an account? </Text>
+            <TouchableOpacity onPress={() => router.push('/login')}>
+              <Text style={styles.signInLink}>Sign in</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </AuthBackground>
   );
 };
 

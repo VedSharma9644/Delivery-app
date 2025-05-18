@@ -8,9 +8,11 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AuthBackground from '@/components/Common/AuthBackground';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -22,61 +24,45 @@ const ForgotPassword = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidView}
-      >
-        <View style={styles.content}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#333" />
-          </TouchableOpacity>
-
-          <View style={styles.header}>
-            <View style={styles.logoContainer}>
-              <Text style={styles.logo}>groccy</Text>
-              <View style={styles.cartIconWrapper}>
-                <Ionicons name="cart" size={24} color="#FF5722" />
-              </View>
-            </View>
-          </View>
-
-          <Text style={styles.title}>Forgot Your Password?</Text>
-
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="example@gmail.com"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-              />
-            </View>
-
-            <TouchableOpacity 
-              style={styles.resetButton}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.resetButtonText}>Send Reset Link</Text>
-            </TouchableOpacity>
-
-            <View style={styles.signInPrompt}>
-              <Text style={styles.signInText}>Back to </Text>
-              <TouchableOpacity onPress={() => router.push('/login')}>
-                <Text style={styles.signInLink}>Sign in</Text>
-              </TouchableOpacity>
+    <AuthBackground showBack={true} onBack={() => router.back()}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <Text style={styles.logo}>groccy</Text>
+            <View style={styles.cartIconWrapper}>
+              <Ionicons name="cart" size={24} color="#FF5722" />
             </View>
           </View>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        <Text style={styles.title}>Forgot Your Password?</Text>
+        <View style={styles.form}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="example@gmail.com"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+            />
+          </View>
+          <TouchableOpacity 
+            style={styles.resetButton}
+            onPress={handleSubmit}
+          >
+            <Text style={styles.resetButtonText}>Send Reset Link</Text>
+          </TouchableOpacity>
+          <View style={styles.signInPrompt}>
+            <Text style={styles.signInText}>Back to </Text>
+            <TouchableOpacity onPress={() => router.push('/login')}>
+              <Text style={styles.signInLink}>Sign in</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </AuthBackground>
   );
 };
 

@@ -5,13 +5,14 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   FlatList,
   Dimensions,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import SafeAreaWrapper from '@/components/Common/SafeAreaWrapper';
 
 const categories = [
   { id: 1, name: 'Vegetables', icon: 'leaf' },
@@ -32,6 +33,7 @@ const products = [
     weight: '(Keral) - 500g',
     price: '$18',
     category: 'Vegetables',
+    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
   },
   {
     id: 2,
@@ -39,6 +41,7 @@ const products = [
     weight: '(Tameta) - 500g',
     price: '$07',
     category: 'Vegetables',
+    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
   },
   {
     id: 3,
@@ -46,6 +49,7 @@ const products = [
     weight: '(Dungli) - 1kg',
     price: '$10',
     category: 'Vegetables',
+    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
   },
   {
     id: 4,
@@ -53,6 +57,7 @@ const products = [
     weight: '(Bataka) - 1kg',
     price: '$17',
     category: 'Vegetables',
+    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
   },
   {
     id: 5,
@@ -60,6 +65,7 @@ const products = [
     weight: '(Tomato) - 500g',
     price: '$07',
     category: 'Vegetables',
+    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
   },
   {
     id: 6,
@@ -67,6 +73,7 @@ const products = [
     weight: '(Okra) - 500g',
     price: '$18',
     category: 'Vegetables',
+    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
   },
 ];
 
@@ -132,9 +139,7 @@ const VendorScreen = () => {
     return (
       <View style={styles.productCard}>
         <View style={styles.productImageContainer}>
-          <View style={styles.productImage}>
-            <Ionicons name="nutrition" size={40} color="#666" />
-          </View>
+          <Image source={item.image} style={styles.productImage} resizeMode="contain" />
         </View>
         <View style={styles.productInfo}>
           <Text style={styles.productName}>{item.name}</Text>
@@ -166,7 +171,7 @@ const VendorScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaWrapper style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity 
           style={styles.backButton}
@@ -217,7 +222,7 @@ const VendorScreen = () => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 };
 
@@ -318,8 +323,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#F5F5F5',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 12,
   },
   productInfo: {
     padding: 12,

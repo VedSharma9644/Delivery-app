@@ -14,7 +14,7 @@ const OrderSuccessScreen = () => {
 
   const handleTrackOrder = () => {
     // Navigate to order tracking
-    router.push('/orders');
+    router.push('/order-track');
   };
 
   const handleGoHome = () => {

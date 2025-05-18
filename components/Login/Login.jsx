@@ -8,10 +8,11 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import SafeAreaWrapper from '@/components/Common/SafeAreaWrapper';
+import AuthBackground from '@/components/Common/AuthBackground';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,13 +27,12 @@ const Login = () => {
   };
 
   return (
-    <SafeAreaWrapper>
-      <View style={styles.container}>
+    <AuthBackground showBack={true} onBack={() => router.back()}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>Welcome Back!</Text>
           <Text style={styles.subtitle}>Sign in to continue</Text>
         </View>
-
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <Ionicons name="mail-outline" size={20} color="#666" />
@@ -47,7 +47,6 @@ const Login = () => {
               autoComplete="email"
             />
           </View>
-
           <View style={styles.inputContainer}>
             <Ionicons name="lock-closed-outline" size={20} color="#666" />
             <TextInput
@@ -70,25 +69,30 @@ const Login = () => {
               />
             </TouchableOpacity>
           </View>
-
           <TouchableOpacity
             style={styles.forgotPassword}
             onPress={() => router.push('/forgot-password')}
           >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
-
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 16 }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: '#eee' }} />
+            <Text style={{ marginHorizontal: 8, color: '#888' }}>or login with</Text>
+            <View style={{ flex: 1, height: 1, backgroundColor: '#eee' }} />
+          </View>
+          <TouchableOpacity style={styles.googleButton} onPress={() => {}} activeOpacity={0.8}>
+            <Ionicons name="logo-google" size={22} color="#EA4335" style={{ marginRight: 8 }} />
+            <Text style={styles.googleButtonText}>Google</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
             <Text style={styles.loginButtonText}>Sign In</Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={[styles.loginButton, { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#FF5722', marginBottom: 10 }]}
             onPress={() => router.push('/(tabs)')}
           >
             <Text style={[styles.loginButtonText, { color: '#FF5722' }]}>Continue without login</Text>
           </TouchableOpacity>
-
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => router.push('/signup')}>
@@ -96,16 +100,12 @@ const Login = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
-    </SafeAreaWrapper>
+      </ScrollView>
+    </AuthBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
   header: {
     marginTop: 40,
     marginBottom: 40,
@@ -174,6 +174,24 @@ const styles = StyleSheet.create({
   signupLink: {
     color: '#FF5722',
     fontWeight: 'bold',
+  },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: '#eee',
+    paddingVertical: 12,
+    marginBottom: 10,
+    marginTop: 0,
+    width: '100%',
+  },
+  googleButtonText: {
+    color: '#222',
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 

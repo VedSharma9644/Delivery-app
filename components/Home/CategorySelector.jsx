@@ -23,7 +23,7 @@ const CategorySelector = ({ activeCategory, onSelectCategory }) => {
             <Ionicons
               name={category.icon}
               size={20}
-              color={isActive ? '#FF5722' : '#666'}
+              color={isActive ? '#ffffff' : '#666'}
               style={{ marginRight: 8 }}
             />
             <Text style={[styles.tabText, isActive && styles.activeTabText]}>{category.name}</Text>
@@ -58,10 +58,11 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 22,
     marginHorizontal: 4,
-    backgroundColor: '#F5F5F5',
+    // backgroundColor: '#F5F5F5',
   },
   activeTab: {
     backgroundColor: '#FF5722',
+    paddingVertical: 10,
   },
   tabText: {
     fontSize: 15,

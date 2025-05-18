@@ -14,7 +14,7 @@ export default function OrderTrack() {
           <Ionicons name="chevron-back" size={24} color="#333" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Order Tracking</Text>
-        <TouchableOpacity style={styles.supportBtn}>
+        <TouchableOpacity onPress={() => router.push('/help')} style={styles.supportBtn}>
           <Text style={styles.supportText}>Contact Support</Text>
         </TouchableOpacity>
       </View>

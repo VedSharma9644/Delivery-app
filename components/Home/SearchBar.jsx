@@ -32,16 +32,16 @@ const SearchBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: '#FFF',
+    padding: 10,
+    backgroundColor: '#F6F6F6',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
+    backgroundColor: '#ffffff',
+    borderRadius: 100,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingVertical: 14,
   },
   searchIcon: {
     marginRight: 8,
