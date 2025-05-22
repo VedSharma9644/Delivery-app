@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -95,9 +96,11 @@ const SearchScreen = () => {
     return (
       <View style={styles.productCard}>
         <View style={styles.productImageContainer}>
-          <View style={styles.productImage}>
-            <Ionicons name="cube-outline" size={40} color="#666" />
-          </View>
+          <Image 
+            source={require('@/assets/mobile-images/Product Details/product details.png')}
+            style={styles.productImage}
+            resizeMode="contain"
+          />
         </View>
         <View style={styles.productInfo}>
           <View style={styles.ratingContainer}>
@@ -129,6 +132,13 @@ const SearchScreen = () => {
     );
   };
 
+  const renderEmptyState = () => (
+    <View style={styles.emptyStateContainer}>
+      <Ionicons name="search" size={64} color="#DDD" />
+      <Text style={styles.emptyStateText}>Search for groceries or hot meals...</Text>
+    </View>
+  );
+
   return (
     <SafeAreaWrapper style={styles.container}>
       <View style={styles.header}>
@@ -159,18 +169,22 @@ const SearchScreen = () => {
       </View>
 
       <View style={styles.resultsContainer}>
-        <Text style={styles.resultsTitle}>
-          Grocery Results for "{searchQuery || 'Atta'}"
-        </Text>
-        <FlatList
-          key={`grid-${NUM_COLUMNS}`}
-          data={filteredProducts}
-          renderItem={renderProduct}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.productsList}
-          numColumns={NUM_COLUMNS}
-          columnWrapperStyle={styles.row}
-        />
+        {searchQuery ? (
+          <>
+            <Text style={styles.resultsTitle}>
+              Grocery Results for "{searchQuery}"
+            </Text>
+            <FlatList
+              key={`grid-${NUM_COLUMNS}`}
+              data={filteredProducts}
+              renderItem={renderProduct}
+              keyExtractor={item => item.id}
+              contentContainerStyle={styles.productsList}
+              numColumns={NUM_COLUMNS}
+              columnWrapperStyle={styles.row}
+            />
+          </>
+        ) : renderEmptyState()}
       </View>
     </SafeAreaWrapper>
   );
@@ -313,6 +327,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginHorizontal: 8,
+  },
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 16,
   },
 });
 

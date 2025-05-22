@@ -13,8 +13,19 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import AuthBackground from '@/components/Common/AuthBackground';
+import DropDownPicker from 'react-native-dropdown-picker';
+
+const countryCodes = ['+1', '+91', '+44']; // Add more as needed
 
 const SignUpStep2 = () => {
+  const [open, setOpen] = useState(false);
+  const [countryCode, setCountryCode] = useState('+1');
+  const [countryItems, setCountryItems] = useState([
+    { label: '+1', value: '+1' },
+    { label: '+91', value: '+91' },
+    { label: '+44', value: '+44' },
+    // Add more country codes as needed
+  ]);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,68 +39,114 @@ const SignUpStep2 = () => {
 
   return (
     <AuthBackground showBack={true} onBack={() => router.back()}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>groccy</Text>
-            <View style={styles.cartIconWrapper}>
-              <Ionicons name="cart" size={24} color="#FF5722" />
-            </View>
-          </View>
+      <View style={{ alignItems: 'center', marginBottom: 16 }}>
+        <Ionicons name="cart" size={40} color="#FF5722" style={{ marginBottom: 8 }} />
+        <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 24, color: '#222' }}>
+          Let's Get You Started
+        </Text>
+      </View>
+      <View style={{ marginBottom: 16 }}>
+        <Text style={{ color: '#888', fontSize: 14, marginBottom: 6 }}>Phone Number</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+          <DropDownPicker
+            open={open}
+            value={countryCode}
+            items={countryItems}
+            setOpen={setOpen}
+            setValue={setCountryCode}
+            setItems={setCountryItems}
+            containerStyle={{ width: 78, zIndex: 10 }}
+            style={{
+              borderTopLeftRadius: 14,
+              borderBottomLeftRadius: 14,
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+              borderColor: '#E0E0E0',
+              height: 48,
+              backgroundColor: '#FFF',
+            }}
+            dropDownContainerStyle={{
+              borderTopLeftRadius: 14,
+              borderBottomLeftRadius: 14,
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+              borderColor: '#E0E0E0',
+              backgroundColor: '#FFF',
+              zIndex: 1000,
+            }}
+            textStyle={{ fontSize: 16, color: '#222' }}
+            showArrowIcon={true}
+            showTickIcon={false}
+            listMode="SCROLLVIEW"
+          />
+          <TextInput
+            style={{
+              flex: 1,
+              height: 48,
+              fontSize: 16,
+              paddingHorizontal: 15,
+              borderTopRightRadius: 14,
+              borderBottomRightRadius: 14,
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              borderColor: '#E0E0E0',
+              borderWidth: 1,
+              borderLeftWidth: 0,
+              backgroundColor: '#FFF',
+            }}
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="22 1234 5678"
+            placeholderTextColor="#999"
+            keyboardType="phone-pad"
+            maxLength={15}
+          />
         </View>
-        <Text style={styles.title}>Let's Get You Started</Text>
-        <View style={styles.form}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput
-              style={styles.input}
-              value={phone}
-              onChangeText={setPhone}
-              placeholder="22 1234 5678"
-              keyboardType="phone-pad"
-            />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordContainer}>
-              <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                placeholder="••••••••"
-                autoCapitalize="none"
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                <Ionicons
-                  name={showPassword ? "eye" : "eye-off"}
-                  size={24}
-                  color="#666"
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity 
-            style={[
-              styles.signUpButton,
-              (!phone || !password) && styles.signUpButtonDisabled
-            ]}
-            onPress={handleSignUp}
-            disabled={!phone || !password}
+        <Text style={{ color: '#888', fontSize: 14, marginBottom: 6 }}>Password</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#F5F5F5', borderRadius: 10, marginBottom: 16 }}>
+          <TextInput
+            style={{ flex: 1, height: 48, fontSize: 16, paddingHorizontal: 15 }}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={{ paddingHorizontal: 10 }}
           >
-            <Text style={styles.signUpButtonText}>Sign Up</Text>
+            <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={22} color="#888" />
           </TouchableOpacity>
-          <View style={styles.signInPrompt}>
-            <Text style={styles.signInText}>Already have an account? </Text>
-            <TouchableOpacity onPress={() => router.push('/login')}>
-              <Text style={styles.signInLink}>Sign in</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </ScrollView>
+      </View>
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#FF5722',
+          borderRadius: 32,
+          height: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}
+        onPress={handleSignUp}
+        disabled={!phone || !password}
+      >
+        <Text style={{ color: '#FFF', fontSize: 18, fontWeight: '600' }}>Sign Up</Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 16 }}>
+        <View style={{ flex: 1, height: 1, backgroundColor: '#eee' }} />
+        <Text style={{ marginHorizontal: 8, color: '#888' }}>or login with</Text>
+        <View style={{ flex: 1, height: 1, backgroundColor: '#eee' }} />
+      </View>
+      {/* Add your social login buttons here if needed */}
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
+        <Text style={{ color: '#666' }}>Already have an account? </Text>
+        <TouchableOpacity onPress={() => router.push('/login')}>
+          <Text style={{ color: '#FF5722', fontWeight: 'bold' }}>Sign in</Text>
+        </TouchableOpacity>
+      </View>
     </AuthBackground>
   );
 };

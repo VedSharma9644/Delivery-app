@@ -41,7 +41,7 @@ const GroceryStoreList = () => {
         <TouchableOpacity 
           key={store.id} 
           style={styles.storeCard}
-          onPress={() => router.push({ pathname: '/vendor', params: { store: store.name } })}
+          onPress={() => router.push({ pathname: '/vendor-categories', params: { store: store.name } })}
         >
           <Image
             source={require('@/assets/mobile-images/vendors/Vendor image.jpg')}
@@ -69,8 +69,12 @@ const GroceryStoreList = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: '#FFF',
+    paddingTop: 14,
+    paddingRight: 14,
+    paddingBottom: 0,
+    paddingLeft: 14,
+
+    
   },
   header: {
     flexDirection: 'row',
@@ -91,21 +95,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    backgroundColor: '#FFF',
-    // borderRadius: 16,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.08,
-    // shadowRadius: 4,
-    // elevation: 2,
+    
     paddingHorizontal: 0,
     paddingVertical: 0,
   },
   vendorImage: {
-    width: 64,
-    height: 64,
+    width: 79,
+    height: 79,
     borderRadius: 14,
-    marginLeft: 16,
+    marginLeft: 0,
     marginRight: 12,
   },
   infoColumn: {

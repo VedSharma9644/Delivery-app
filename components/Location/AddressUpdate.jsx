@@ -32,8 +32,8 @@ const AddressUpdate = () => {
   };
 
   const handleSave = () => {
-    // Save address and navigate to main app or show success
-    router.back();
+    // Save address and navigate to main home screen
+    router.replace('/(tabs)');
   };
 
   return (

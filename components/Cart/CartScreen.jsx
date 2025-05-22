@@ -7,6 +7,7 @@ import {
   TextInput,
   FlatList,
   Dimensions,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -75,7 +76,11 @@ export default function CartScreen() {
     <Swipeable renderRightActions={() => renderRightActions(item.id)}>
       <View style={styles.cartItem}>
         <View style={styles.productImage}>
-          <Ionicons name="cube" size={32} color="#FF5722" />
+          <Image 
+            source={require('@/assets/mobile-images/Product Details/product details.png')}
+            style={styles.productImageStyle}
+            resizeMode="contain"
+          />
         </View>
         <View style={styles.itemDetails}>
           <Text style={styles.itemName}>{item.name}</Text>
@@ -124,7 +129,7 @@ export default function CartScreen() {
   }
 
   return (
-    <SafeAreaWrapper style={{ flex: 1 }}>
+    <SafeAreaWrapper style={{ flex: 1 , paddingBottom: 0  }}>
       <FlatList
         ListHeaderComponent={
           <>
@@ -270,6 +275,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
+    overflow: 'hidden',
+  },
+  productImageStyle: {
+    width: '100%',
+    height: '100%',
   },
   itemDetails: {
     flex: 1,

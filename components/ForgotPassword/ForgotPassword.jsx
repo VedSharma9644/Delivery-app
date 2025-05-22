@@ -25,43 +25,52 @@ const ForgotPassword = () => {
 
   return (
     <AuthBackground showBack={true} onBack={() => router.back()}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>groccy</Text>
-            <View style={styles.cartIconWrapper}>
-              <Ionicons name="cart" size={24} color="#FF5722" />
-            </View>
-          </View>
-        </View>
-        <Text style={styles.title}>Forgot Your Password?</Text>
-        <View style={styles.form}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="example@gmail.com"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoComplete="email"
-            />
-          </View>
-          <TouchableOpacity 
-            style={styles.resetButton}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.resetButtonText}>Send Reset Link</Text>
-          </TouchableOpacity>
-          <View style={styles.signInPrompt}>
-            <Text style={styles.signInText}>Back to </Text>
-            <TouchableOpacity onPress={() => router.push('/login')}>
-              <Text style={styles.signInLink}>Sign in</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+      <View style={{ alignItems: 'center', marginBottom: 16 }}>
+        <Ionicons name="cart" size={40} color="#FF5722" style={{ marginBottom: 8 }} />
+      </View>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 24, color: '#222' }}>
+        Forgot Your Password?
+      </Text>
+      <View style={{ marginBottom: 16 }}>
+        <Text style={{ color: '#888', fontSize: 14, marginBottom: 6 }}>Mail/Phone</Text>
+        <TextInput
+          style={{
+            backgroundColor: '#FFF',
+            borderRadius: 10,
+            paddingHorizontal: 15,
+            height: 48,
+            fontSize: 16,
+            marginBottom: 16,
+            borderColor: '#E0E0E0',
+            borderWidth: 1,
+          }}
+          placeholder="example@gmail.com"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
+        />
+      </View>
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#FF5722',
+          borderRadius: 32,
+          height: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: '#FFF', fontSize: 18, fontWeight: '600' }}>Send Reset Link</Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 0 }}>
+        <Text style={{ color: '#666' }}>Back to </Text>
+        <TouchableOpacity onPress={() => router.push('/login')}>
+          <Text style={{ color: '#FF5722', fontWeight: 'bold' }}>Sign in</Text>
+        </TouchableOpacity>
+      </View>
     </AuthBackground>
   );
 };

@@ -58,7 +58,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaWrapper style={{ flex: 1, backgroundColor: '#F6F6F6' }}>
+    <SafeAreaWrapper style={{ flex: 1, backgroundColor: '#F6F6F6', marginBottom: 0, paddingBottom: 0 }}>
       <HomeHeader />
       <View style={{ height: 0 }} />
       <SearchBar />

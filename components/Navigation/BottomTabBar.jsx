@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePathname, useRouter } from 'expo-router';
 
@@ -41,14 +41,27 @@ export default function BottomTabBar() {
         return (
           <TouchableOpacity
             key={tab.name}
-            style={[styles.tab, isActive && styles.activeTab]}
+            style={styles.tab}
             onPress={() => router.push(tab.path)}
           >
-            <Ionicons
-              name={isActive ? tab.activeIcon : tab.icon}
-              size={24}
-              color={isActive ? '#FF460A' : '#757575'}
-            />
+            {isActive ? (
+              <View style={styles.activePill}>
+                <View style={styles.activeIconCircle}>
+                  <Ionicons
+                    name={tab.activeIcon}
+                    size={24}
+                    color={'#FFF'}
+                  />
+                </View>
+                <Text style={styles.activeLabel}>{tab.name === 'Orders' ? 'Order' : tab.name}</Text>
+              </View>
+            ) : (
+              <Ionicons
+                name={tab.icon}
+                size={24}
+                color={'#757575'}
+              />
+            )}
           </TouchableOpacity>
         );
       })}
@@ -60,18 +73,40 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
-    paddingBottom: 20,
-    paddingTop: 12,
+    paddingBottom: 32,
+    paddingTop: 8,
     borderTopWidth: 1,
     borderTopColor: '#EEEEEE',
+    paddingHorizontal: 20,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
+
   },
-  activeTab: {
-    backgroundColor: 'transparent',
+  activePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F6F6F6',
+    borderRadius: 24,
+    paddingTop:0,
+    marginTop:0,
+    paddingRight: 16,
+  },
+  activeIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 90,
+    backgroundColor: '#FF460A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 6,
+  },
+  activeLabel: {
+    color: '#222',
+    fontWeight: '500',
+    fontSize: 14,
   },
 }); 

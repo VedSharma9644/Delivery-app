@@ -33,6 +33,11 @@ const PaymentMethodsScreen = () => {
     router.push('/add-card');
   };
 
+  const handleApply = () => {
+    // Handle apply logic here
+    router.back();
+  };
+
   const renderCard = (card) => (
     <TouchableOpacity
       key={card.id}
@@ -63,7 +68,7 @@ const PaymentMethodsScreen = () => {
   );
 
   return (
-    <SafeAreaWrapper>
+    <SafeAreaWrapper style={styles.wrapper}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#333" />
@@ -82,11 +87,23 @@ const PaymentMethodsScreen = () => {
           <Text style={styles.addCardText}>Add New Card</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <View style={styles.footer}>
+        <TouchableOpacity 
+          style={styles.applyButton}
+          onPress={handleApply}
+        >
+          <Text style={styles.applyButtonText}>Apply</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaWrapper>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -115,13 +132,13 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     padding: 16,
     backgroundColor: '#FFF',
     borderRadius: 12,
     marginBottom: 16,
     borderWidth: 1,
     borderColor: '#F0F0F0',
+    position: 'relative',
   },
   selectedCard: {
     borderColor: '#FF5722',
@@ -129,6 +146,7 @@ const styles = StyleSheet.create({
   cardInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
   },
   cardIconContainer: {
     width: 40,
@@ -160,6 +178,8 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    right: 16,
   },
   radioButtonSelected: {
     borderColor: '#FF5722',
@@ -184,6 +204,25 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#FF5722',
     marginLeft: 8,
+  },
+  footer: {
+    padding: 16,
+    paddingBottom: 24,
+    backgroundColor: '#FFF',
+    borderTopWidth: 1,
+    borderTopColor: '#F0F0F0',
+  },
+  applyButton: {
+    backgroundColor: '#FF5722',
+    borderRadius: 32,
+    height: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  applyButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 

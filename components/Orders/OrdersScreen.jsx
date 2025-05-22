@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -76,17 +77,17 @@ const OrdersScreen = () => {
     switch (status) {
       case 'Delivered':
         return {
-          container: { backgroundColor: '#E8F5E9' },
+          container: { backgroundColor: '#E8F5E9', borderColor: '#66D575', borderWidth: 1 },
           text: { color: '#4CAF50' }
         };
       case 'Cancelled':
         return {
-          container: { backgroundColor: '#FFEBEE' },
+          container: { backgroundColor: '#FFEBEE', borderColor: '#FF3D00', borderWidth: 1 },
           text: { color: '#F44336' }
         };
       default:
         return {
-          container: { backgroundColor: '#E8F5E9' },
+          container: { backgroundColor: '#E8F5E9', borderColor: '#66D575', borderWidth: 1 },
           text: { color: '#4CAF50' }
         };
     }
@@ -102,7 +103,11 @@ const OrdersScreen = () => {
       >
         <View style={styles.orderImageContainer}>
           <View style={styles.imageContainer}>
-            <Ionicons name="cube" size={40} color="#FF5722" />
+            <Image 
+              source={require('@/assets/mobile-images/Product Details/product details.png')}
+              style={styles.productImage}
+              resizeMode="contain"
+            />
           </View>
         </View>
         <View style={styles.orderInfo}>
@@ -128,43 +133,23 @@ const OrdersScreen = () => {
   };
 
   return (
-    <SafeAreaWrapper>
+    <SafeAreaWrapper style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>My Orders</Text>
       </View>
 
-      <View style={styles.tabContainer}>
+      <View style={styles.tabPillContainer}>
         <TouchableOpacity
-          style={[
-            styles.tab,
-            activeTab === 'current' && styles.activeTab,
-          ]}
+          style={[styles.tabPill, activeTab === 'current' && styles.activeTabPill]}
           onPress={() => setActiveTab('current')}
         >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === 'current' && styles.activeTabText,
-            ]}
-          >
-            Current Order
-          </Text>
+          <Text style={[styles.tabPillText, activeTab === 'current' && styles.activeTabPillText]}>Current Order</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[
-            styles.tab,
-            activeTab === 'past' && styles.activeTab,
-          ]}
+          style={[styles.tabPill, activeTab === 'past' && styles.activeTabPill]}
           onPress={() => setActiveTab('past')}
         >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === 'past' && styles.activeTabText,
-            ]}
-          >
-            Past Orders
-          </Text>
+          <Text style={[styles.tabPillText, activeTab === 'past' && styles.activeTabPillText]}>Past Orders</Text>
         </TouchableOpacity>
       </View>
 
@@ -174,6 +159,7 @@ const OrdersScreen = () => {
         keyExtractor={item => item.id}
         contentContainerStyle={styles.ordersList}
         showsVerticalScrollIndicator={false}
+        style={{ backgroundColor: '#F6F6F6' }}
       />
     </SafeAreaWrapper>
   );
@@ -182,7 +168,7 @@ const OrdersScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F6F6F6',
   },
   header: {
     padding: 16,
@@ -191,28 +177,37 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     color: '#333',
+    alignSelf: 'center',
   },
-  tabContainer: {
+  tabPillContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-  },
-  tab: {
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    marginRight: 8,
+    backgroundColor: '#F5F5F5',
     borderRadius: 100,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    marginTop: 8,
+    alignSelf: 'center',
+    padding: 4,
   },
-  activeTab: {
-    backgroundColor: '#000',
+  tabPill: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 100,
+    backgroundColor: 'transparent',
   },
-  tabText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#666',
+  activeTabPill: {
+    backgroundColor: '#111',
   },
-  activeTabText: {
+  tabPillText: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#111',
+  },
+  activeTabPillText: {
     color: '#FFF',
+    fontWeight: '400',
   },
   ordersList: {
     padding: 16,
@@ -224,11 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 16,
     padding: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+   
   },
   orderImageContainer: {
     marginRight: 12,
@@ -240,6 +231,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
   },
   orderInfo: {
     flex: 1,

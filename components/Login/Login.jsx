@@ -69,11 +69,19 @@ const Login = () => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.forgotPassword}
-            onPress={() => router.push('/forgot-password')}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          <View style={styles.rowBetween}>
+            <TouchableOpacity style={styles.rememberMeContainer} onPress={() => setRememberMe(!rememberMe)}>
+              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                {rememberMe && <Ionicons name="checkmark" size={14} color="#fff" />}
+              </View>
+              <Text style={styles.rememberMeText}>Remember me</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.forgotPassword} onPress={() => router.push('/forgot-password')}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+            <Text style={styles.loginButtonText}>Log in</Text>
           </TouchableOpacity>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 16 }}>
             <View style={{ flex: 1, height: 1, backgroundColor: '#eee' }} />
@@ -84,9 +92,6 @@ const Login = () => {
             <Ionicons name="logo-google" size={22} color="#EA4335" style={{ marginRight: 8 }} />
             <Text style={styles.googleButtonText}>Google</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-            <Text style={styles.loginButtonText}>Sign In</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.loginButton, { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#FF5722', marginBottom: 10 }]}
             onPress={() => router.push('/(tabs)')}
@@ -96,7 +101,7 @@ const Login = () => {
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => router.push('/signup')}>
-              <Text style={styles.signupLink}>Sign Up</Text>
+              <Text style={styles.signupLink}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -107,7 +112,7 @@ const Login = () => {
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: 40,
+    marginTop: 0,
     marginBottom: 40,
   },
   title: {
@@ -115,6 +120,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
+    top: 0,
   },
   subtitle: {
     fontSize: 16,
@@ -142,9 +148,38 @@ const styles = StyleSheet.create({
     right: 12,
     top: '25%',
   },
+  rowBetween: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  rememberMeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: '#FF5722',
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  checkboxChecked: {
+    backgroundColor: '#FF5722',
+    borderColor: '#FF5722',
+  },
+  rememberMeText: {
+    fontSize: 13,
+    color: '#333',
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   forgotPasswordText: {
     color: '#FF5722',

@@ -53,51 +53,62 @@ const SignUpVerify = () => {
 
   return (
     <AuthBackground showBack={true} onBack={() => router.back()}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logo}>groccy</Text>
-            <View style={styles.cartIconWrapper}>
-              <Ionicons name="cart" size={24} color="#FF5722" />
-            </View>
-          </View>
-        </View>
-        <Text style={styles.title}>Verify Your Account</Text>
-        <Text style={styles.subtitle}>
-          Enter the 6-digit code we sent you to quickly verify your mobile.
-        </Text>
-        <View style={styles.otpContainer}>
-          {otp.map((digit, index) => (
-            <TextInput
-              key={index}
-              ref={ref => inputRefs.current[index] = ref}
-              style={styles.otpInput}
-              value={digit}
-              onChangeText={(value) => handleOtpChange(value, index)}
-              onKeyPress={(e) => handleKeyPress(e, index)}
-              keyboardType="numeric"
-              maxLength={1}
-              selectTextOnFocus
-            />
-          ))}
-        </View>
-        <TouchableOpacity 
-          style={[
-            styles.verifyButton,
-            !otp.every(digit => digit !== '') && styles.verifyButtonDisabled
-          ]}
-          onPress={handleVerify}
-          disabled={!otp.every(digit => digit !== '')}
-        >
-          <Text style={styles.verifyButtonText}>Verify</Text>
+      <View style={{ alignItems: 'center', marginBottom: 16 }}>
+        <Ionicons name="cart" size={40} color="#FF5722" style={{ marginBottom: 8 }} />
+      </View>
+      <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 12, color: '#222' }}>
+        Verify Your Account
+      </Text>
+      <Text style={{ fontSize: 15, color: '#666', textAlign: 'center', marginBottom: 32 }}>
+        Enter the 6-digit code we sent you to quickly verify your mobile.
+      </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 32, paddingHorizontal: 10 }}>
+        {otp.map((digit, index) => (
+          <TextInput
+            key={index}
+            ref={ref => inputRefs.current[index] = ref}
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: '#E0E0E0',
+              backgroundColor: '#FFF',
+              fontSize: 20,
+              textAlign: 'center',
+              color: '#333',
+              marginHorizontal: 3,
+              left: -20,
+            }}
+            value={digit}
+            onChangeText={(value) => handleOtpChange(value, index)}
+            onKeyPress={(e) => handleKeyPress(e, index)}
+            keyboardType="numeric"
+            maxLength={1}
+            selectTextOnFocus
+          />
+        ))}
+      </View>
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#FF5722',
+          borderRadius: 32,
+          height: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 20,
+        }}
+        onPress={handleVerify}
+        disabled={!otp.every(digit => digit !== '')}
+      >
+        <Text style={{ color: '#FFF', fontSize: 18, fontWeight: '600' }}>Verify</Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 0 }}>
+        <Text style={{ color: '#666' }}>Did not receive OTP? </Text>
+        <TouchableOpacity onPress={handleResendCode}>
+          <Text style={{ color: '#FF5722', fontWeight: 'bold' }}>Resend code</Text>
         </TouchableOpacity>
-        <View style={styles.resendContainer}>
-          <Text style={styles.resendText}>Did not receive OTP? </Text>
-          <TouchableOpacity onPress={handleResendCode}>
-            <Text style={styles.resendLink}>Resend code</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      </View>
     </AuthBackground>
   );
 };

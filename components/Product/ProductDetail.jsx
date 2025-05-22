@@ -3,19 +3,32 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import SafeAreaWrapper from '@/components/Common/SafeAreaWrapper';
 
 const { width } = Dimensions.get('window');
 
 const ProductDetail = () => {
   const router = useRouter();
+  const params = useLocalSearchParams();
   const [quantity, setQuantity] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Accept images as an array of URIs or require()s from params
+  let images = [];
+  if (params.images) {
+    try {
+      images = typeof params.images === 'string' ? JSON.parse(params.images) : params.images;
+    } catch {
+      images = Array.isArray(params.images) ? params.images : [];
+    }
+  }
 
   const incrementQuantity = () => {
     setQuantity(prev => prev + 1);
@@ -25,8 +38,13 @@ const ProductDetail = () => {
     setQuantity(prev => Math.max(0, prev - 1));
   };
 
+  const handleScroll = (event) => {
+    const index = Math.round(event.nativeEvent.contentOffset.x / width);
+    setActiveIndex(index);
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaWrapper style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -38,29 +56,61 @@ const ProductDetail = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Product Image */}
-        <View style={styles.imageContainer}>
+      {/* Image Slider */}
+      <View style={styles.imageContainer}>
+        {images.length > 0 ? (
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            style={{ width }}
+          >
+            {images.map((img, idx) => (
+              <Image
+                key={idx}
+                source={typeof img === 'string' ? { uri: img } : img}
+                style={styles.productImageSlider}
+                resizeMode="contain"
+              />
+            ))}
+          </ScrollView>
+        ) : (
           <View style={styles.productImage}>
             <Ionicons name="bag" size={120} color="#FF5722" />
           </View>
-          <View style={styles.pagination}>
-            <View style={[styles.paginationDot, styles.paginationDotActive]} />
-            <View style={styles.paginationDot} />
-          </View>
+        )}
+        {/* Pagination Dots */}
+        <View style={styles.pagination}>
+          {images.length > 0 ? images.map((_, idx) => (
+            <View
+              key={idx}
+              style={[styles.paginationDot, idx === activeIndex && styles.paginationDotActive]}
+            />
+          )) : (
+            <>
+              <View style={[styles.paginationDot, styles.paginationDotActive]} />
+              <View style={styles.paginationDot} />
+            </>
+          )}
         </View>
+      </View>
 
-        {/* Product Info */}
+      {/* Product Info */}
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.productInfo}>
           <View style={styles.titleRow}>
             <View style={styles.titleContainer}>
-              <Text style={styles.productName}>Big Bazaar</Text>
-              <Text style={styles.subtitle}>Fortune Chakki Fresh Atta</Text>
+              <Text style={styles.productName}>{params.name || 'Big Bazaar'}</Text>
+              <Text style={styles.subtitle}>{params.subtitle || 'Fortune Chakki Fresh Atta'}</Text>
             </View>
+            <view style={styles.stockSatusview}>
             <Text style={styles.stockStatus}>In stock</Text>
+            </view>
           </View>
 
-          <Text style={styles.price}>$249</Text>
+          <Text style={styles.price}>{params.price || '$249'}</Text>
 
           {/* Ratings and Info */}
           <View style={styles.infoRow}>
@@ -93,7 +143,7 @@ const ProductDetail = () => {
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionTitle}>Product Description</Text>
             <Text style={styles.descriptionText}>
-              Fortune Chakki Fresh Atta is made from quality wheat grains, delivering soft rotis and nutrition. Ideal for daily meals, this Big pack suits the family.
+              {params.description || 'Fortune Chakki Fresh Atta is made from quality wheat grains, delivering soft rotis and nutrition. Ideal for daily meals, this Big pack suits the family.'}
             </Text>
           </View>
         </View>
@@ -138,7 +188,7 @@ const ProductDetail = () => {
           </View>
         )}
       </View>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 };
 
@@ -185,6 +235,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  productImageSlider: {
+    width: width,
+    height: width * 0.8,
+    resizeMode: 'contain',
+  },
   pagination: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -227,8 +282,15 @@ const styles = StyleSheet.create({
   },
   stockStatus: {
     fontSize: 12,
-    color: '#4CAF50',
+    color: '#0C0C0B',
     fontWeight: '500',
+
+  },
+  stockSatusview: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
   },
   price: {
     fontSize: 24,

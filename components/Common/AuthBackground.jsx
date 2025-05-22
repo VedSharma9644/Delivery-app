@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
     height: IMAGE_HEIGHT,
     width: '100%',
     backgroundColor: '#FFEFD5',
+    position: 'absolute',
+    top: 60,
   },
   bg: {
     width: '100%',
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: 'absolute',
-    top: 36,
+    top: 50,
     left: 18,
     zIndex: 20,
     backgroundColor: '#fff',
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: CARD_MAX_WIDTH,
-    height: '100%',
+    height: '105%',
     alignSelf: 'center',
     backgroundColor: '#fff',
     borderTopLeftRadius: 32,

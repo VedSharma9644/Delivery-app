@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+const router = require('expo-router').useRouter();
 
 const FOOD_ITEMS = [
   {
@@ -99,7 +100,7 @@ const CARD_WIDTH = (Dimensions.get('window').width - 12 * 2 - CARD_GAP) / 2; // 
 
 const FoodList = () => {
   const renderFoodItem = (item) => (
-    <TouchableOpacity key={item.id} style={styles.foodItem}>
+    <TouchableOpacity key={item.id} style={styles.foodItem} onPress={() => router.push({ pathname: '/product', params: { name: item.name } })} activeOpacity={0.8}>
       <View style={styles.imageContainer}>
         <View style={styles.imagePlaceholder}>
           <Ionicons name="restaurant" size={32} color="#FF5722" />
@@ -145,9 +146,9 @@ const FoodList = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Popular Food</Text>
+        <Text style={styles.title}>Near of you</Text>
         <TouchableOpacity>
-          <Text style={styles.viewAllText}>View All</Text>
+          <Text style={styles.viewMore}>View More</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -175,26 +176,21 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: '600',
     color: '#333',
   },
-  viewAllText: {
-    fontSize: 12,
-    color: '#FF5722',
+  viewMore: {
+    fontSize: 14,
+    color: '#666',
   },
-  foodList: {
-    // removed gap, now handled by FlatList
-  },
+
   foodItem: {
     flexDirection: 'row',
     backgroundColor: '#FFF',
     borderRadius: 12,
     padding: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
+    
     elevation: 2,
   },
   imageContainer: {
@@ -254,13 +250,9 @@ const styles = StyleSheet.create({
   vendorCard: {
     backgroundColor: '#FFF',
     borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
     marginBottom: 0,
     padding: 0,
+    paddingBottom: 10,
     overflow: 'hidden',
     minWidth: 0,
   },

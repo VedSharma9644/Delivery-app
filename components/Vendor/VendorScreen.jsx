@@ -15,15 +15,15 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import SafeAreaWrapper from '@/components/Common/SafeAreaWrapper';
 
 const categories = [
-  { id: 1, name: 'Vegetables', icon: 'leaf' },
-  { id: 2, name: 'Rice', icon: 'restaurant' },
-  { id: 3, name: 'Coriander', icon: 'leaf' },
-  { id: 4, name: 'Dairy', icon: 'water' },
-  { id: 5, name: 'Dals', icon: 'nutrition' },
-  { id: 6, name: 'Masalas', icon: 'color-filter' },
-  { id: 7, name: 'Household', icon: 'home' },
-  { id: 8, name: 'Oil & Ghee', icon: 'water' },
-  { id: 9, name: 'Snacks', icon: 'pizza' },
+  { id: 1, name: 'Vegetables', image: require('@/assets/mobile-images/Product Categories/Vegetables.png') },
+  { id: 2, name: 'Rice', image: require('@/assets/mobile-images/Product Categories/Rice.png') },
+  { id: 3, name: 'Coriander', image: require('@/assets/mobile-images/Product Categories/Coriander.png') },
+  { id: 4, name: 'Dairy', image: require('@/assets/mobile-images/Product Categories/Dairy.png') },
+  { id: 5, name: 'Dals', image: require('@/assets/mobile-images/Product Categories/Dals.jpg') },
+  { id: 6, name: 'Masalas', image: require('@/assets/mobile-images/Product Categories/masalas.png') },
+  { id: 7, name: 'Household', image: require('@/assets/mobile-images/Product Categories/household.png') },
+  { id: 8, name: 'Oil & Ghee', image: require('@/assets/mobile-images/Product Categories/oil & ghee.png') },
+  { id: 9, name: 'Snacks', image: require('@/assets/mobile-images/Product Categories/snacks.png') },
 ];
 
 const products = [
@@ -33,7 +33,7 @@ const products = [
     weight: '(Keral) - 500g',
     price: '$18',
     category: 'Vegetables',
-    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
+    image: require('@/assets/mobile-images/Product Details/product details.png'),
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ const products = [
     weight: '(Tameta) - 500g',
     price: '$07',
     category: 'Vegetables',
-    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
+    image: require('@/assets/mobile-images/Product Details/product details.png'),
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ const products = [
     weight: '(Dungli) - 1kg',
     price: '$10',
     category: 'Vegetables',
-    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
+    image: require('@/assets/mobile-images/Product Details/product details.png'),
   },
   {
     id: 4,
@@ -57,7 +57,7 @@ const products = [
     weight: '(Bataka) - 1kg',
     price: '$17',
     category: 'Vegetables',
-    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
+    image: require('@/assets/mobile-images/Product Details/product details.png'),
   },
   {
     id: 5,
@@ -65,7 +65,7 @@ const products = [
     weight: '(Tomato) - 500g',
     price: '$07',
     category: 'Vegetables',
-    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
+    image: require('@/assets/mobile-images/Product Details/product details.png'),
   },
   {
     id: 6,
@@ -73,7 +73,7 @@ const products = [
     weight: '(Okra) - 500g',
     price: '$18',
     category: 'Vegetables',
-    image: require('@/assets/mobile-images/Grocery products/Group 4534568.png'),
+    image: require('@/assets/mobile-images/Product Details/product details.png'),
   },
 ];
 
@@ -117,10 +117,13 @@ const VendorScreen = () => {
       ]}
       onPress={() => setSelectedCategory(item.name)}
     >
-      <Ionicons 
-        name={item.icon} 
-        size={24} 
-        color={selectedCategory === item.name ? '#FF5722' : '#666'} 
+      <Image 
+        source={item.image}
+        style={[
+          styles.categoryImage,
+          selectedCategory === item.name && styles.categoryImageActive
+        ]}
+        resizeMode="contain"
       />
       <Text 
         style={[
@@ -136,8 +139,13 @@ const VendorScreen = () => {
 
   const renderProduct = ({ item }) => {
     const quantity = cart[item.id] || 0;
+    const sliderImages = [
+      require('@/assets/mobile-images/Product Details/product details.png'),
+      require('@/assets/mobile-images/Product Details/product details.png'),
+      require('@/assets/mobile-images/Product Details/product details.png'),
+    ];
     return (
-      <View style={styles.productCard}>
+      <TouchableOpacity style={styles.productCard} onPress={() => router.push({ pathname: '/product', params: { name: item.name, images: JSON.stringify(sliderImages) } })} activeOpacity={0.8}>
         <View style={styles.productImageContainer}>
           <Image source={item.image} style={styles.productImage} resizeMode="contain" />
         </View>
@@ -166,7 +174,7 @@ const VendorScreen = () => {
             )}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -229,7 +237,7 @@ const VendorScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F6F6F6',
   },
   header: {
     flexDirection: 'row',
@@ -252,7 +260,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
-    borderRadius: 8,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: '#0C0C0B1A',
     paddingHorizontal: 12,
   },
   searchIcon: {
@@ -285,6 +295,15 @@ const styles = StyleSheet.create({
   categoryButtonActive: {
     backgroundColor: '#FFF8F6',
   },
+  categoryImage: {
+    width: 32,
+    height: 32,
+    marginBottom: 4,
+    opacity: 0.6,
+  },
+  categoryImageActive: {
+    opacity: 1,
+  },
   categoryText: {
     fontSize: 10,
     color: '#666',
@@ -303,14 +322,16 @@ const styles = StyleSheet.create({
   productCard: {
     width: PRODUCT_WIDTH,
     backgroundColor: '#FFF',
+    borderWidth: 3,
+    borderColor: '#ffffff',
     borderRadius: 12,
     marginBottom: PRODUCT_MARGIN,
     marginRight: PRODUCT_MARGIN,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 4,
+    // elevation: 3,
   },
   productImageContainer: {
     width: '100%',
@@ -318,12 +339,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     overflow: 'hidden',
+    
+    backgroundColor: '#F5F5F5',
   },
   productImage: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#F5F5F5',
+    width: '90%',
+    height: '90%',
     borderRadius: 12,
+    top: 4,
   },
   productInfo: {
     padding: 12,

@@ -1,59 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  TextInput,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import SafeAreaWrapper from '@/components/Common/SafeAreaWrapper';
 
-const ORDER_ITEMS = [
+const CURRENT_ORDER_ITEMS = [
   {
     id: '1',
     name: 'Mantra Atta',
     price: 299,
     quantity: 1,
-    deliveryTime: '25 mins',
   },
   {
     id: '2',
     name: 'Reliance Fresh',
-    price: 260,
+    price: 250,
     quantity: 1,
-    deliveryTime: '30 mins',
   },
   {
     id: '3',
     name: 'Dosa Junction',
     price: 199,
     quantity: 1,
-    deliveryTime: '15 mins',
+  },
+];
+
+const PAST_ORDER_ITEMS = [
+  {
+    id: '1',
+    name: 'Mantra Atta',
+    price: 299,
+    quantity: 1,
+  },
+  {
+    id: '2',
+    name: 'Reliance Fresh',
+    price: 250,
+    quantity: 1,
+  },
+  {
+    id: '3',
+    name: 'Dosa Junction',
+    price: 199,
+    quantity: 1,
   },
 ];
 
 const OrderSummaryScreen = () => {
   const router = useRouter();
-  const itemTotal = ORDER_ITEMS.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const [activeTab, setActiveTab] = useState('current');
+  const orderItems = activeTab === 'current' ? CURRENT_ORDER_ITEMS : PAST_ORDER_ITEMS;
+  const itemTotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const deliveryFee = 25;
   const tax = 25;
   const total = itemTotal + deliveryFee + tax;
 
   const renderOrderItem = (item) => (
-    <View key={item.id} style={styles.orderItem}>
+    <TouchableOpacity key={item.id} style={styles.orderItem} onPress={() => router.push({ pathname: '/product', params: { name: item.name } })} activeOpacity={0.8}>
       <View style={styles.itemInfo}>
         <View style={styles.productImage}>
-          <Ionicons name="fast-food" size={24} color="#FF5722" />
+          <Image 
+            source={require('@/assets/mobile-images/Product Details/product details.png')}
+            style={styles.productImageStyle}
+            resizeMode="contain"
+          />
         </View>
         <View style={styles.itemDetails}>
           <Text style={styles.itemName}>{item.name}</Text>
-          <View style={styles.timeContainer}>
-            <Ionicons name="time-outline" size={14} color="#666" />
-            <Text style={styles.timeText}>{item.deliveryTime}</Text>
-          </View>
+          
           <Text style={styles.itemPrice}>${item.price}</Text>
         </View>
       </View>
@@ -66,68 +87,47 @@ const OrderSummaryScreen = () => {
           <Text style={styles.quantityButtonText}>+</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaWrapper style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Order Summary</Text>
-        <View style={styles.placeholder} />
+        <Text style={styles.headerTitle}>Big bazaar Order</Text>
       </View>
-
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'current' && styles.activeTab]}
+          onPress={() => setActiveTab('current')}
+        >
+          <Text style={[styles.tabText, activeTab === 'current' && styles.activeTabText]}>Current Order</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'past' && styles.activeTab]}
+          onPress={() => setActiveTab('past')}
+        >
+          <Text style={[styles.tabText, activeTab === 'past' && styles.activeTabText]}>Past Orders</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView style={[styles.content, { backgroundColor: '#F6F6F6' }]} showsVerticalScrollIndicator={false}>
         <View style={styles.orderItems}>
-          {ORDER_ITEMS.map(renderOrderItem)}
+          {orderItems.map(renderOrderItem)}
         </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Delivering To</Text>
-          <View style={styles.mapContainer}>
-            <View style={styles.map} />
-          </View>
-          <View style={styles.addressInputs}>
-            <Text style={styles.inputLabel}>Address</Text>
-            <TextInput
-              style={styles.input}
-              value="10/5 Buchans Drive 3037"
-              editable={false}
-            />
-            <Text style={styles.inputLabel}>Phone Number</Text>
-            <View style={styles.phoneInput}>
-              <View style={styles.countryCode}>
-                <Text style={styles.countryCodeText}>+1</Text>
-                <Ionicons name="chevron-down" size={16} color="#333" />
-              </View>
-              <TextInput
-                style={[styles.input, styles.phoneNumber]}
-                value="98765 43210"
-                editable={false}
-              />
-            </View>
-          </View>
-          <TouchableOpacity style={styles.changeButton}>
-            <Text style={styles.changeButtonText}>Change</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Method</Text>
-          <View style={styles.paymentMethod}>
-            <View style={styles.cardIconContainer}>
-              <Ionicons name="card" size={20} color="#FF5722" />
-            </View>
-            <Text style={styles.cardNumber}>**** **** **** 1234</Text>
-            <TouchableOpacity>
-              <Text style={styles.changeText}>Change</Text>
-            </TouchableOpacity>
+        <View style={styles.infoCard}>
+          <Ionicons name="location-outline" size={20} color="#FF5722" style={{ marginRight: 8 }} />
+          <View>
+            <Text style={styles.infoTitle}>Deliver to  → Home</Text>
+            <Text style={styles.infoSubtitle}>221B Baker Street, London, United Kingdom</Text>
           </View>
         </View>
-
-        <View style={[styles.section, styles.billSection]}>
+        <View style={styles.infoCard}>
+          <Ionicons name="card-outline" size={20} color="#FF5722" style={{ marginRight: 8 }} />
+          <View>
+            <Text style={styles.infoTitle}>Payment card</Text>
+            <Text style={styles.infoSubtitle}>Card last 4 digits: 1234</Text>
+          </View>
+        </View>
+        <View style={styles.billSection}>
           <View style={styles.billRow}>
             <Text style={styles.billLabel}>Item Total</Text>
             <Text style={styles.billValue}>${itemTotal}</Text>
@@ -146,53 +146,79 @@ const OrderSummaryScreen = () => {
           </View>
         </View>
       </ScrollView>
-
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.confirmButton}>
-          <Text style={styles.confirmButtonText}>Confirm Order</Text>
+        <TouchableOpacity style={styles.reorderButton}>
+          <Text style={styles.reorderButtonText}>Reorder</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </SafeAreaWrapper>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F6F6F6',
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
-  },
-  backButton: {
-    padding: 4,
+    paddingTop: 24,
+    paddingBottom: 8,
   },
   headerTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: '#333',
   },
-  placeholder: {
-    width: 32,
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 100,
+    marginHorizontal: 24,
+    marginBottom: 12,
+    marginTop: 8,
+    alignSelf: 'center',
+    padding: 4,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 100,
+  },
+  activeTab: {
+    backgroundColor: '#000',
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#666',
+  },
+  activeTabText: {
+    color: '#FFF',
+    fontSize: 16,
   },
   content: {
     flex: 1,
   },
   orderItems: {
-    padding: 16,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 0,
   },
   orderItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    backgroundColor: '#FFF',
+    borderRadius: 14,
+    padding: 10,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.03,
+    shadowRadius: 2,
+    elevation: 1,
   },
   itemInfo: {
     flexDirection: 'row',
@@ -207,30 +233,28 @@ const styles = StyleSheet.create({
     marginRight: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  productImageStyle: {
+    width: '100%',
+    height: '100%',
   },
   itemDetails: {
     flex: 1,
   },
   itemName: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '500',
     color: '#333',
-    marginBottom: 4,
+    marginTop: 18,
+    marginBottom: 12,
   },
-  timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  timeText: {
-    fontSize: 12,
-    color: '#666',
-    marginLeft: 4,
-  },
+  
   itemPrice: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#333',
+    marginBottom: 18,
   },
   quantityControl: {
     flexDirection: 'row',
@@ -256,111 +280,43 @@ const styles = StyleSheet.create({
     color: '#333',
     paddingHorizontal: 12,
   },
-  section: {
-    padding: 16,
-    borderTopWidth: 8,
-    borderTopColor: '#F5F5F5',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 16,
-  },
-  mapContainer: {
-    height: 120,
-    backgroundColor: '#F5F5F5',
+  infoCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
     borderRadius: 12,
-    marginBottom: 16,
-  },
-  map: {
-    flex: 1,
-    backgroundColor: '#E1E1E1',
-  },
-  addressInputs: {
-    marginBottom: 16,
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
-  },
-  input: {
-    height: 44,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 14,
-    color: '#333',
-    marginBottom: 16,
-  },
-  phoneInput: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  countryCode: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    height: 44,
-    marginRight: 8,
-  },
-  countryCodeText: {
-    fontSize: 14,
-    color: '#333',
-    marginRight: 4,
-  },
-  phoneNumber: {
-    flex: 1,
+    padding: 12,
+    marginHorizontal: 12,
+    marginTop: 8,
     marginBottom: 0,
   },
-  changeButton: {
-    borderWidth: 1,
-    borderColor: '#FF5722',
-    borderRadius: 8,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  changeButtonText: {
+  infoTitle: {
     fontSize: 14,
-    color: '#FF5722',
     fontWeight: '500',
-  },
-  paymentMethod: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    padding: 12,
-  },
-  cardIconContainer: {
-    width: 32,
-    height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardNumber: {
-    flex: 1,
-    fontSize: 14,
     color: '#333',
-    marginLeft: 12,
   },
-  changeText: {
-    fontSize: 14,
-    color: '#FF5722',
-    fontWeight: '500',
+  infoSubtitle: {
+    fontSize: 13,
+    color: '#666',
+    marginTop: 2,
   },
   billSection: {
-    paddingTop: 24,
+    marginHorizontal: 12,
+    marginTop: 16,
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.03,
+    shadowRadius: 2,
+    elevation: 1,
   },
   billRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   billLabel: {
     fontSize: 14,
@@ -372,8 +328,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   totalRow: {
-    marginTop: 12,
-    paddingTop: 16,
+    marginTop: 10,
+    paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: '#F0F0F0',
   },
@@ -391,14 +347,15 @@ const styles = StyleSheet.create({
     padding: 16,
     borderTopWidth: 1,
     borderTopColor: '#F0F0F0',
+
   },
-  confirmButton: {
+  reorderButton: {
     backgroundColor: '#FF5722',
-    borderRadius: 8,
+    borderRadius: 100,
     paddingVertical: 16,
     alignItems: 'center',
   },
-  confirmButtonText: {
+  reorderButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFF',
