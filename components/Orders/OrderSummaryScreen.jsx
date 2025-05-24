@@ -95,19 +95,8 @@ const OrderSummaryScreen = () => {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Big bazaar Order</Text>
       </View>
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'current' && styles.activeTab]}
-          onPress={() => setActiveTab('current')}
-        >
-          <Text style={[styles.tabText, activeTab === 'current' && styles.activeTabText]}>Current Order</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'past' && styles.activeTab]}
-          onPress={() => setActiveTab('past')}
-        >
-          <Text style={[styles.tabText, activeTab === 'past' && styles.activeTabText]}>Past Orders</Text>
-        </TouchableOpacity>
+      <View style={styles.orderNumber}>
+        <Text style={styles.orderNumberText}>Order Number: #123456</Text>
       </View>
       <ScrollView style={[styles.content, { backgroundColor: '#F6F6F6' }]} showsVerticalScrollIndicator={false}>
         <View style={styles.orderItems}>
@@ -186,21 +175,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 100,
   },
-  activeTab: {
-    backgroundColor: '#000',
-  },
-  tabText: {
+  orderNumber:{
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 16,
     fontWeight: '500',
     color: '#666',
   },
-  activeTabText: {
-    color: '#FFF',
-    fontSize: 16,
-  },
-  content: {
-    flex: 1,
-  },
+  
+  
   orderItems: {
     paddingHorizontal: 12,
     paddingTop: 8,

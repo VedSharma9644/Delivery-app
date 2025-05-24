@@ -10,16 +10,24 @@ const HomeHeader = () => {
     router.push('/notifications');
   };
 
+  const handleLocationPress = () => {
+    router.push('/set-location');
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.locationContainer}>
+      <TouchableOpacity 
+        style={styles.locationContainer}
+        onPress={handleLocationPress}
+        activeOpacity={0.7}
+      >
         <Text style={styles.locationLabel}>My Location</Text>
         <View style={styles.locationRow}>
           <Ionicons name="location-outline" size={20} color="#333" />
           <Text style={styles.locationText}>Fremont, CA</Text>
           <Ionicons name="chevron-down" size={20} color="#333" />
         </View>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity 
         style={styles.notificationButton}
         onPress={handleNotificationPress}

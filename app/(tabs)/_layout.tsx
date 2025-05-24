@@ -5,7 +5,7 @@ import BottomTabBar from '@/components/Navigation/BottomTabBar';
 
 export default function TabLayout() {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#F6F6F6' }}>
       <Stack screenOptions={{ headerShown: false }}>
         {/* Home Tab */}
         <Stack.Screen name="index" />

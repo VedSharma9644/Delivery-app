@@ -105,9 +105,9 @@ const ProductDetail = () => {
               <Text style={styles.productName}>{params.name || 'Big Bazaar'}</Text>
               <Text style={styles.subtitle}>{params.subtitle || 'Fortune Chakki Fresh Atta'}</Text>
             </View>
-            <view style={styles.stockSatusview}>
+            <View style={styles.stockSatusview}>
             <Text style={styles.stockStatus}>In stock</Text>
-            </view>
+            </View>
           </View>
 
           <Text style={styles.price}>{params.price || '$249'}</Text>

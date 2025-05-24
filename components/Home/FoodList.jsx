@@ -100,7 +100,7 @@ const CARD_WIDTH = (Dimensions.get('window').width - 12 * 2 - CARD_GAP) / 2; // 
 
 const FoodList = () => {
   const renderFoodItem = (item) => (
-    <TouchableOpacity key={item.id} style={styles.foodItem} onPress={() => router.push({ pathname: '/product', params: { name: item.name } })} activeOpacity={0.8}>
+    <TouchableOpacity key={item.id} style={styles.foodItem} onPress={() => router.push({ pathname: 'location/restaurantsubcategories', params: { name: item.name } })} activeOpacity={0.8}>
       <View style={styles.imageContainer}>
         <View style={styles.imagePlaceholder}>
           <Ionicons name="restaurant" size={32} color="#FF5722" />
@@ -124,7 +124,7 @@ const FoodList = () => {
   );
 
   const renderRestaurantVendor = ({ item: vendor }) => (
-    <TouchableOpacity key={vendor.id} style={[styles.vendorCard, { width: CARD_WIDTH }]}>
+    <TouchableOpacity key={vendor.id} style={[styles.vendorCard, { width: CARD_WIDTH }]} onPress={() => router.push({ pathname: '/restaurantScreen1', params: { store: vendor.name } })}>
       <Image source={vendor.image} style={styles.vendorImage} resizeMode="cover" />
       <View style={styles.vendorInfo}>
         <Text style={styles.vendorName}>{vendor.name}</Text>

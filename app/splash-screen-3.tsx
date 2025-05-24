@@ -38,7 +38,7 @@ export default function SplashScreen3() {
       {/* Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push('/(tabs)')}
+        onPress={() => router.push('/login')}
         activeOpacity={0.85}
       >
         <Text style={styles.buttonText}>Start shopping</Text>

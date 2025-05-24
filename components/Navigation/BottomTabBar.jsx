@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePathname, useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
 const tabs = [
   {
@@ -42,7 +43,10 @@ export default function BottomTabBar() {
           <TouchableOpacity
             key={tab.name}
             style={styles.tab}
-            onPress={() => router.push(tab.path)}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              router.push(tab.path);
+            }}
           >
             {isActive ? (
               <View style={styles.activePill}>
@@ -78,6 +82,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#EEEEEE',
     paddingHorizontal: 20,
+    borderRadius: 16,
+    elevation: 2,
   },
   tab: {
     flex: 1,
